@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "comehiro-app-439f7"
+  },
+  "targets": {
+    "comehiro-app-439f7": {
+      "hosting": {
+        "target_reserve": [
+          "comehiro-reserve"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
