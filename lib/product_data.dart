@@ -1,9 +1,11 @@
 // product_data.dart
 
 final List<Map<String, dynamic>> allProducts = [
-  // --- 食パン ---
+  // ==========================================
+  // --- 食パン（ロングサイズ） ---
+  // ==========================================
   {
-    'name': 'プレーン米粉パン',
+    'name': 'プレーン米粉パン（ロング）',
     'price': 410,
     'category': '食パン',
     'limit_weekday': 10,
@@ -11,7 +13,7 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': ['豚肉'],
   },
   {
-    'name': '玄米パン',
+    'name': '玄米パン（ロング）',
     'price': 540,
     'category': '食パン',
     'limit_weekday': 0,
@@ -19,7 +21,7 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': [],
   },
   {
-    'name': 'かぼちゃパン',
+    'name': 'かぼちゃパン（ロング）',
     'price': 550,
     'category': '食パン',
     'limit_weekday': 0,
@@ -27,7 +29,7 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': ['乳'],
   },
   {
-    'name': 'アールグレイ',
+    'name': 'アールグレイ（ロング）',
     'price': 630,
     'category': '食パン',
     'limit_weekday': 5,
@@ -35,7 +37,7 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': ['豚肉'],
   },
   {
-    'name': '黒ごま',
+    'name': '黒ごま（ロング）',
     'price': 510,
     'category': '食パン',
     'limit_weekday': 5,
@@ -43,7 +45,7 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': ['豚肉', 'ごま'],
   },
   {
-    'name': 'レーズンパン',
+    'name': 'レーズンパン（ロング）',
     'price': 510,
     'category': '食パン',
     'limit_weekday': 5,
@@ -51,7 +53,7 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': ['豚肉'],
   },
   {
-    'name': 'クルミいちじくパン',
+    'name': 'クルミいちじくパン（ロング）',
     'price': 700,
     'category': '食パン',
     'limit_weekday': 5,
@@ -59,7 +61,7 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': ['豚肉'],
   },
   {
-    'name': 'さつまパン',
+    'name': 'さつまパン（ロング）',
     'price': 500,
     'category': '食パン',
     'limit_weekday': 5,
@@ -67,7 +69,7 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': ['豚肉'],
   },
   {
-    'name': 'ココアマーブルパン',
+    'name': 'ココアマーブルパン（ロング）',
     'price': 510,
     'category': '食パン',
     'limit_weekday': 5,
@@ -75,7 +77,7 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': ['豚肉'],
   },
   {
-    'name': 'チーズパン',
+    'name': 'チーズパン（ロング）',
     'price': 590,
     'category': '食パン',
     'limit_weekday': 5,
@@ -83,7 +85,7 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': ['乳', '豚肉'],
   },
   {
-    'name': 'クランベリーパン',
+    'name': 'クランベリーパン（ロング）',
     'price': 540,
     'category': '食パン',
     'limit_weekday': 5,
@@ -91,7 +93,7 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': ['豚肉'],
   },
   {
-    'name': 'チョコチップパン',
+    'name': 'チョコチップパン（ロング）',
     'price': 550,
     'category': '食パン',
     'limit_weekday': 5,
@@ -99,7 +101,7 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': ['乳', '豚肉'],
   },
   {
-    'name': '伊予柑ピールパン',
+    'name': '伊予柑ピールパン（ロング）',
     'price': 620,
     'category': '食パン',
     'limit_weekday': 5,
@@ -107,7 +109,7 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': ['豚肉'],
   },
   {
-    'name': 'あずきパン',
+    'name': 'あずきパン（ロング）',
     'price': 510,
     'category': '食パン',
     'limit_weekday': 5,
@@ -115,7 +117,7 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': ['豚肉'],
   },
   {
-    'name': 'くるみパン',
+    'name': 'くるみパン（ロング）',
     'price': 700,
     'category': '食パン',
     'limit_weekday': 5,
@@ -123,7 +125,133 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': ['豚肉'],
   },
 
+  // ==========================================
+  // --- 食パン（ハーフサイズ）土日限定 ---
+  // ==========================================
+  {
+    'name': 'プレーン米粉パン（ハーフ）',
+    'price': 205,
+    'category': '食パン',
+    'limit_weekday': 0, // ハーフは平日は0（非表示）
+    'limit_weekend': 10,
+    'allergies': ['豚肉'],
+  },
+  {
+    'name': '玄米パン（ハーフ）',
+    'price': 270,
+    'category': '食パン',
+    'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': [],
+  },
+  {
+    'name': 'かぼちゃパン（ハーフ）',
+    'price': 275,
+    'category': '食パン',
+    'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': ['乳'],
+  },
+  {
+    'name': 'アールグレイ（ハーフ）',
+    'price': 315,
+    'category': '食パン',
+    'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
+  },
+  {
+    'name': '黒ごま（ハーフ）',
+    'price': 255,
+    'category': '食パン',
+    'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': ['豚肉', 'ごま'],
+  },
+  {
+    'name': 'レーズンパン（ハーフ）',
+    'price': 255,
+    'category': '食パン',
+    'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
+  },
+  {
+    'name': 'クルミいちじくパン（ハーフ）',
+    'price': 350,
+    'category': '食パン',
+    'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
+  },
+  {
+    'name': 'さつまパン（ハーフ）',
+    'price': 250,
+    'category': '食パン',
+    'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
+  },
+  {
+    'name': 'ココアマーブルパン（ハーフ）',
+    'price': 255,
+    'category': '食パン',
+    'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
+  },
+  {
+    'name': 'チーズパン（ハーフ）',
+    'price': 295,
+    'category': '食パン',
+    'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': ['乳', '豚肉'],
+  },
+  {
+    'name': 'クランベリーパン（ハーフ）',
+    'price': 270,
+    'category': '食パン',
+    'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
+  },
+  {
+    'name': 'チョコチップパン（ハーフ）',
+    'price': 275,
+    'category': '食パン',
+    'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': ['乳', '豚肉'],
+  },
+  {
+    'name': '伊予柑ピールパン（ハーフ）',
+    'price': 310,
+    'category': '食パン',
+    'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
+  },
+  {
+    'name': 'あずきパン（ハーフ）',
+    'price': 255,
+    'category': '食パン',
+    'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
+  },
+  {
+    'name': 'くるみパン（ハーフ）',
+    'price': 350,
+    'category': '食パン',
+    'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
+  },
+
+  // ==========================================
   // --- 調理パン ---
+  // ==========================================
   {
     'name': 'ウィンナーパン（ケチャップ）',
     'price': 245,
@@ -245,7 +373,9 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': [],
   },
 
+  // ==========================================
   // --- 菓子パン ---
+  // ==========================================
   {
     'name': 'ワッフル',
     'price': 185,
