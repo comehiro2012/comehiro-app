@@ -2,8 +2,10 @@
 
 final List<Map<String, dynamic>> allProducts = [
   // ==========================================
-  // --- 食パン（ロングサイズ） ---
+  // --- 食パン（同じ商品のロング・ハーフを隣り合わせに配置） ---
   // ==========================================
+
+  // 1. プレーン米粉パン
   {
     'name': 'プレーン米粉パン（ロング）',
     'price': 410,
@@ -13,128 +15,22 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': ['豚肉'],
   },
   {
+    'name': 'プレーン米粉パン（ハーフ）',
+    'price': 205,
+    'category': '食パン',
+    'limit_weekday': 0,
+    'limit_weekend': 10,
+    'allergies': ['豚肉'],
+  },
+
+  // 2. 玄米パン
+  {
     'name': '玄米パン（ロング）',
     'price': 540,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 5,
     'allergies': [],
-  },
-  {
-    'name': 'かぼちゃパン（ロング）',
-    'price': 550,
-    'category': '食パン',
-    'limit_weekday': 0,
-    'limit_weekend': 5,
-    'allergies': ['乳'],
-  },
-  {
-    'name': 'アールグレイ（ロング）',
-    'price': 630,
-    'category': '食パン',
-    'limit_weekday': 5,
-    'limit_weekend': 5,
-    'allergies': ['豚肉'],
-  },
-  {
-    'name': '黒ごま（ロング）',
-    'price': 510,
-    'category': '食パン',
-    'limit_weekday': 5,
-    'limit_weekend': 5,
-    'allergies': ['豚肉', 'ごま'],
-  },
-  {
-    'name': 'レーズンパン（ロング）',
-    'price': 510,
-    'category': '食パン',
-    'limit_weekday': 5,
-    'limit_weekend': 5,
-    'allergies': ['豚肉'],
-  },
-  {
-    'name': 'クルミいちじくパン（ロング）',
-    'price': 700,
-    'category': '食パン',
-    'limit_weekday': 5,
-    'limit_weekend': 5,
-    'allergies': ['豚肉'],
-  },
-  {
-    'name': 'さつまパン（ロング）',
-    'price': 500,
-    'category': '食パン',
-    'limit_weekday': 5,
-    'limit_weekend': 5,
-    'allergies': ['豚肉'],
-  },
-  {
-    'name': 'ココアマーブルパン（ロング）',
-    'price': 510,
-    'category': '食パン',
-    'limit_weekday': 5,
-    'limit_weekend': 5,
-    'allergies': ['豚肉'],
-  },
-  {
-    'name': 'チーズパン（ロング）',
-    'price': 590,
-    'category': '食パン',
-    'limit_weekday': 5,
-    'limit_weekend': 5,
-    'allergies': ['乳', '豚肉'],
-  },
-  {
-    'name': 'クランベリーパン（ロング）',
-    'price': 540,
-    'category': '食パン',
-    'limit_weekday': 5,
-    'limit_weekend': 5,
-    'allergies': ['豚肉'],
-  },
-  {
-    'name': 'チョコチップパン（ロング）',
-    'price': 550,
-    'category': '食パン',
-    'limit_weekday': 5,
-    'limit_weekend': 5,
-    'allergies': ['乳', '豚肉'],
-  },
-  {
-    'name': '伊予柑ピールパン（ロング）',
-    'price': 620,
-    'category': '食パン',
-    'limit_weekday': 5,
-    'limit_weekend': 5,
-    'allergies': ['豚肉'],
-  },
-  {
-    'name': 'あずきパン（ロング）',
-    'price': 510,
-    'category': '食パン',
-    'limit_weekday': 5,
-    'limit_weekend': 5,
-    'allergies': ['豚肉'],
-  },
-  {
-    'name': 'くるみパン（ロング）',
-    'price': 700,
-    'category': '食パン',
-    'limit_weekday': 5,
-    'limit_weekend': 5,
-    'allergies': ['豚肉'],
-  },
-
-  // ==========================================
-  // --- 食パン（ハーフサイズ）土日限定 ---
-  // ==========================================
-  {
-    'name': 'プレーン米粉パン（ハーフ）',
-    'price': 205,
-    'category': '食パン',
-    'limit_weekday': 0, // ハーフは平日は0（非表示）
-    'limit_weekend': 10,
-    'allergies': ['豚肉'],
   },
   {
     'name': '玄米パン（ハーフ）',
@@ -144,6 +40,16 @@ final List<Map<String, dynamic>> allProducts = [
     'limit_weekend': 5,
     'allergies': [],
   },
+
+  // 3. かぼちゃパン
+  {
+    'name': 'かぼちゃパン（ロング）',
+    'price': 550,
+    'category': '食パン',
+    'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': ['乳'],
+  },
   {
     'name': 'かぼちゃパン（ハーフ）',
     'price': 275,
@@ -151,6 +57,16 @@ final List<Map<String, dynamic>> allProducts = [
     'limit_weekday': 0,
     'limit_weekend': 5,
     'allergies': ['乳'],
+  },
+
+  // 4. アールグレイ
+  {
+    'name': 'アールグレイ（ロング）',
+    'price': 630,
+    'category': '食パン',
+    'limit_weekday': 5,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
   },
   {
     'name': 'アールグレイ（ハーフ）',
@@ -160,6 +76,16 @@ final List<Map<String, dynamic>> allProducts = [
     'limit_weekend': 5,
     'allergies': ['豚肉'],
   },
+
+  // 5. 黒ごま
+  {
+    'name': '黒ごま（ロング）',
+    'price': 510,
+    'category': '食パン',
+    'limit_weekday': 5,
+    'limit_weekend': 5,
+    'allergies': ['豚肉', 'ごま'],
+  },
   {
     'name': '黒ごま（ハーフ）',
     'price': 255,
@@ -168,11 +94,31 @@ final List<Map<String, dynamic>> allProducts = [
     'limit_weekend': 5,
     'allergies': ['豚肉', 'ごま'],
   },
+
+  // 6. レーズンパン
+  {
+    'name': 'レーズンパン（ロング）',
+    'price': 510,
+    'category': '食パン',
+    'limit_weekday': 5,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
+  },
   {
     'name': 'レーズンパン（ハーフ）',
     'price': 255,
     'category': '食パン',
     'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
+  },
+
+  // 7. クルミいちじくパン
+  {
+    'name': 'クルミいちじくパン（ロング）',
+    'price': 700,
+    'category': '食パン',
+    'limit_weekday': 5,
     'limit_weekend': 5,
     'allergies': ['豚肉'],
   },
@@ -184,11 +130,31 @@ final List<Map<String, dynamic>> allProducts = [
     'limit_weekend': 5,
     'allergies': ['豚肉'],
   },
+
+  // 8. さつまパン
+  {
+    'name': 'さつまパン（ロング）',
+    'price': 500,
+    'category': '食パン',
+    'limit_weekday': 5,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
+  },
   {
     'name': 'さつまパン（ハーフ）',
     'price': 250,
     'category': '食パン',
     'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
+  },
+
+  // 9. ココアマーブルパン
+  {
+    'name': 'ココアマーブルパン（ロング）',
+    'price': 510,
+    'category': '食パン',
+    'limit_weekday': 5,
     'limit_weekend': 5,
     'allergies': ['豚肉'],
   },
@@ -200,6 +166,16 @@ final List<Map<String, dynamic>> allProducts = [
     'limit_weekend': 5,
     'allergies': ['豚肉'],
   },
+
+  // 10. チーズパン
+  {
+    'name': 'チーズパン（ロング）',
+    'price': 590,
+    'category': '食パン',
+    'limit_weekday': 5,
+    'limit_weekend': 5,
+    'allergies': ['乳', '豚肉'],
+  },
   {
     'name': 'チーズパン（ハーフ）',
     'price': 295,
@@ -207,6 +183,16 @@ final List<Map<String, dynamic>> allProducts = [
     'limit_weekday': 0,
     'limit_weekend': 5,
     'allergies': ['乳', '豚肉'],
+  },
+
+  // 11. クランベリーパン
+  {
+    'name': 'クランベリーパン（ロング）',
+    'price': 540,
+    'category': '食パン',
+    'limit_weekday': 5,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
   },
   {
     'name': 'クランベリーパン（ハーフ）',
@@ -216,6 +202,16 @@ final List<Map<String, dynamic>> allProducts = [
     'limit_weekend': 5,
     'allergies': ['豚肉'],
   },
+
+  // 12. チョコチップパン
+  {
+    'name': 'チョコチップパン（ロング）',
+    'price': 550,
+    'category': '食パン',
+    'limit_weekday': 5,
+    'limit_weekend': 5,
+    'allergies': ['乳', '豚肉'],
+  },
   {
     'name': 'チョコチップパン（ハーフ）',
     'price': 275,
@@ -223,6 +219,16 @@ final List<Map<String, dynamic>> allProducts = [
     'limit_weekday': 0,
     'limit_weekend': 5,
     'allergies': ['乳', '豚肉'],
+  },
+
+  // 13. 伊予柑ピールパン
+  {
+    'name': '伊予柑ピールパン（ロング）',
+    'price': 620,
+    'category': '食パン',
+    'limit_weekday': 5,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
   },
   {
     'name': '伊予柑ピールパン（ハーフ）',
@@ -232,11 +238,31 @@ final List<Map<String, dynamic>> allProducts = [
     'limit_weekend': 5,
     'allergies': ['豚肉'],
   },
+
+  // 14. あずきパン
+  {
+    'name': 'あずきパン（ロング）',
+    'price': 510,
+    'category': '食パン',
+    'limit_weekday': 5,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
+  },
   {
     'name': 'あずきパン（ハーフ）',
     'price': 255,
     'category': '食パン',
     'limit_weekday': 0,
+    'limit_weekend': 5,
+    'allergies': ['豚肉'],
+  },
+
+  // 15. くるみパン
+  {
+    'name': 'くるみパン（ロング）',
+    'price': 700,
+    'category': '食パン',
+    'limit_weekday': 5,
     'limit_weekend': 5,
     'allergies': ['豚肉'],
   },
