@@ -64,16 +64,6 @@ class FirstPage extends StatelessWidget {
               children: [
                 Text('・'),
                 Expanded(
-                  child: Text('お支払い方法は現金、クレジットカード、交通系電子マネー、QRコードがお使いになれます。'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            const Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('・'),
-                Expanded(
                   child: Text(
                     'ご予約のキャンセルは前日15:00までに電話にてお願いします。当日のキャンセルは100%のキャンセル料が発生します。',
                     style: TextStyle(

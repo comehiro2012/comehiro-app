@@ -209,6 +209,21 @@ class _ProductSelectPageState extends State<ProductSelectPage> {
         final int count = orderCount[name] ?? 0;
         final int limit = getCustomerLimit(item, _selectedDate);
 
+        // --- 💡 ここから追加 ---
+        // 1. カレンダーで選択された日付（_selectedDate）が平日の月〜金（1〜5）かどうかを判定します
+        final bool isWeekday =
+            _selectedDate.weekday >= DateTime.monday &&
+            _selectedDate.weekday <= DateTime.friday;
+
+        // 2. 現在のデータの「平日上限数（limit_weekday）」を取得します（安全のためにデフォルトを0に設定）
+        final int limitWeekday = item['limit_weekday'] ?? 0;
+
+        // 3. 平日、かつ平日上限数が0（ハーフサイズなど）であれば、画面に表示しない（空っぽの要素を返す）
+        if (isWeekday && limitWeekday == 0) {
+          return const SizedBox.shrink(); // 高さをゼロにしてスペースも詰めちゃいます
+        }
+        // --- 💡 ここまで追加 ---
+
         // --- 1. ルール撤廃にともない、一律1個から注文可能に修正 ---
         const int minOrder = 1;
 
@@ -231,22 +246,22 @@ class _ProductSelectPageState extends State<ProductSelectPage> {
                       : () => setState(() {
                           // マイナスを押した時はシンプルに1ずつ減らすロジックに修正
                           orderCount[name] = count - 1;
-                        }),
+                        }), // 👈 ここから下が途切れていた部分の補完です
                 ),
-                Text('$count'),
+                Text(
+                  '$count',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 IconButton(
-                  icon: const Icon(Icons.add_circle, color: Colors.orange),
-                  onPressed: count < limit
-                      ? () => setState(() {
-                          // プラスを押した時はシンプルに1ずつ増やすロジックに修正
-                          orderCount[name] = count + 1;
-                        })
-                      : () {
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('$nameは上限$limit個までです')),
-                          );
-                        },
+                  icon: const Icon(Icons.add_circle_outline),
+                  onPressed: count >= limit
+                      ? null
+                      : () => setState(() {
+                          orderCount[name] = count == 0 ? minOrder : count + 1;
+                        }),
                 ),
               ],
             ),

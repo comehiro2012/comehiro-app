@@ -164,8 +164,10 @@ class _UserInfoPageState extends State<UserInfoPage> {
           children: [
             TextField(
               controller: _nameController,
+              keyboardType: TextInputType.text,
               decoration: const InputDecoration(
-                labelText: 'お名前',
+                labelText: 'お名前（苗字のみ、ニックネーム可）',
+                hintText: '例：コメヒロ、コメコちゃん',
                 icon: Icon(Icons.person),
               ),
             ),
