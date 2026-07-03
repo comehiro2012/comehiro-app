@@ -18,7 +18,6 @@ class ProductSelectPage extends StatefulWidget {
 
 class _ProductSelectPageState extends State<ProductSelectPage> {
   late DateTime _selectedDate;
-
   final Map<String, int> orderCount = {};
 
   @override
@@ -76,12 +75,13 @@ class _ProductSelectPageState extends State<ProductSelectPage> {
 
     if (picked != null) {
       setState(() {
+        // 💡 修正ポイント：日付が変わっても、前画面から届いた「元の時間情報」を上書きせずにガッチリキープします！
         _selectedDate = DateTime(
           picked.year,
           picked.month,
           picked.day,
-          _selectedDate.hour,
-          _selectedDate.minute,
+          widget.initialDate.hour, // 👈 最初の時間をキープ
+          widget.initialDate.minute, // 👈 最初の時間をキープ
         );
         orderCount.clear();
       });
@@ -90,7 +90,6 @@ class _ProductSelectPageState extends State<ProductSelectPage> {
 
   @override
   Widget build(BuildContext context) {
-    // ruleText を削除してすっきりさせました
     return DefaultTabController(
       key: ValueKey(_selectedDate),
       length: 3,
@@ -104,16 +103,12 @@ class _ProductSelectPageState extends State<ProductSelectPage> {
               onPressed: () => _selectDate(context),
             ),
           ],
-          // ★ タブのデザインを変更して目立たせました
           bottom: const TabBar(
             indicatorColor: Colors.orange,
-            indicatorWeight: 4.0, // 下線を太くして存在感アップ
+            indicatorWeight: 4.0,
             labelColor: Colors.black,
-            labelStyle: TextStyle(
-              fontSize: 16, // 文字サイズを大きく
-              fontWeight: FontWeight.bold, // くっきり太字に
-            ),
-            unselectedLabelColor: Colors.black54, // 選択されていないタブを少し薄くしてメリハリを
+            labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            unselectedLabelColor: Colors.black54,
             tabs: [
               Tab(text: '食パン'),
               Tab(text: '菓子パン'),
@@ -128,7 +123,7 @@ class _ProductSelectPageState extends State<ProductSelectPage> {
               color: Colors.orange.shade50,
               width: double.infinity,
               child: Text(
-                '予約日：${_selectedDate.year}/${_selectedDate.month}/${_selectedDate.day}',
+                '予約日：${_selectedDate.year}/${_selectedDate.month}/${_selectedDate.day} (${widget.selectedTime})', // 💡 画面にも選択時間を優しく添えておきます
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
@@ -181,7 +176,8 @@ class _ProductSelectPageState extends State<ProductSelectPage> {
                             builder: (context) => UserInfoPage(
                               orderCount: orderCount,
                               totalAmount: totalAmount,
-                              selectedDate: _selectedDate,
+                              selectedDate:
+                                  _selectedDate, // 💡 時間が詰まった状態のままUserInfoPageにバトンタッチ
                             ),
                           ),
                         )
@@ -209,22 +205,16 @@ class _ProductSelectPageState extends State<ProductSelectPage> {
         final int count = orderCount[name] ?? 0;
         final int limit = getCustomerLimit(item, _selectedDate);
 
-        // --- 💡 ここから追加 ---
-        // 1. カレンダーで選択された日付（_selectedDate）が平日の月〜金（1〜5）かどうかを判定します
         final bool isWeekday =
             _selectedDate.weekday >= DateTime.monday &&
             _selectedDate.weekday <= DateTime.friday;
 
-        // 2. 現在のデータの「平日上限数（limit_weekday）」を取得します（安全のためにデフォルトを0に設定）
         final int limitWeekday = item['limit_weekday'] ?? 0;
 
-        // 3. 平日、かつ平日上限数が0（ハーフサイズなど）であれば、画面に表示しない（空っぽの要素を返す）
         if (isWeekday && limitWeekday == 0) {
-          return const SizedBox.shrink(); // 高さをゼロにしてスペースも詰めちゃいます
+          return const SizedBox.shrink();
         }
-        // --- 💡 ここまで追加 ---
 
-        // --- 1. ルール撤廃にともない、一律1個から注文可能に修正 ---
         const int minOrder = 1;
 
         return Card(
@@ -234,7 +224,6 @@ class _ProductSelectPageState extends State<ProductSelectPage> {
               name,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            // --- 2. 〇個からの補足テキストを削除し、スッキリさせました ---
             subtitle: Text('${item['price']}円 / 上限: $limit個'),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
@@ -244,9 +233,8 @@ class _ProductSelectPageState extends State<ProductSelectPage> {
                   onPressed: count == 0
                       ? null
                       : () => setState(() {
-                          // マイナスを押した時はシンプルに1ずつ減らすロジックに修正
                           orderCount[name] = count - 1;
-                        }), // 👈 ここから下が途切れていた部分の補完です
+                        }),
                 ),
                 Text(
                   '$count',

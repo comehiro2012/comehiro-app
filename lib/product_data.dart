@@ -475,8 +475,8 @@ final List<Map<String, dynamic>> allProducts = [
     'allergies': ['豚肉'],
   },
   {
-    'name': 'つぶあんぱん',
-    'price': 165,
+    'name': 'よもぎあんぱん',
+    'price': 195,
     'category': '菓子パン',
     'limit_weekday': 9,
     'limit_weekend': 9,

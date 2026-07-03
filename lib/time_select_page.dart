@@ -11,6 +11,7 @@ class TimeSelectPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 💡 表示用の文字リスト
     final List<String> timeSlots = [
       '10:00 〜 11:00',
       '11:00 〜 12:00',
@@ -18,6 +19,9 @@ class TimeSelectPage extends StatelessWidget {
       '13:00 〜 14:00',
       '14:00 〜 15:00',
     ];
+
+    // 💡 ズレを防ぐため、開始時間を数字のリストで正確に用意します
+    final List<int> startHours = [10, 11, 12, 13, 14];
 
     return Scaffold(
       appBar: AppBar(title: const Text('受取時間を選択')),
@@ -29,12 +33,10 @@ class TimeSelectPage extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 8),
             child: ListTile(
               title: Text(timeSlots[index], textAlign: TextAlign.center),
-
               onTap: () {
-                // 文字列 '10:00 〜 11:00' から最初の '10' と '00' を取り出す
-                final timePart = timeSlots[index].split(' 〜 ')[0]; // '10:00'
-                final hour = int.parse(timePart.split(':')[0]); // 10
-                final minute = int.parse(timePart.split(':')[1]); // 0
+                // 💡 文字列を分解するのをやめて、上の数字リストから直接時間を取得（エラーを100%回避！）
+                final int hour = startHours[index];
+                const int minute = 0;
 
                 // 元々の selectedDate（日付）に、選んだ時間をセットした新しい DateTime を作成
                 final pickupDateTime = DateTime(
