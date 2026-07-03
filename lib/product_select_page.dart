@@ -20,10 +20,121 @@ class _ProductSelectPageState extends State<ProductSelectPage> {
   late DateTime _selectedDate;
   final Map<String, int> orderCount = {};
 
+  // 💡 ポップアップの表示終了日時（2026年7月20日まで表示）
+  final DateTime noticeEndDate = DateTime(2026, 7, 20, 23, 59);
+
   @override
   void initState() {
     super.initState();
     _selectedDate = widget.initialDate;
+
+    // 画面が表示された直後にお知らせを表示
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (mounted) {
+        _showAnnouncement(context);
+      }
+    });
+  }
+
+  // 💡 文字だけで魅せる、洗練されたお知らせダイアログ
+  void _showAnnouncement(BuildContext context) {
+    if (DateTime.now().isBefore(noticeEndDate)) {
+      showDialog(
+        context: context,
+        barrierDismissible: true, // 枠外をタップしても優しく閉じられるように
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.transparent, // 現代的なフラットホワイトをキープ
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            contentPadding: const EdgeInsets.fromLTRB(
+              28,
+              32,
+              28,
+              24,
+            ), // 下部の余白を調整
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 🏷️ 控えめかつ洗練された「NEW」のタグ
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.brown.shade50,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    'NEW PRODUCT',
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.brown.shade700,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                // 🍞 タイトル
+                const Text(
+                  'よもぎあんぱん新登場',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                // ✍️ 💡 商品説明文（ここをお好きな文章に自由に変更できます！）
+                Text(
+                  '風味豊かな国産のよもぎを練り込んだ米粉の生地で、瀬戸の藻塩あんを包みました。',
+                  style: TextStyle(
+                    fontSize: 14,
+                    height: 1.6, // 行間を広げてモダンな読みやすさに
+                    color: Colors.grey.shade700,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  '¥195（税込）',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.orange.shade700,
+                  ),
+                ),
+              ],
+            ),
+            // 💡 ボタンを右下にシンプルに1つだけ配置
+            actionsPadding: const EdgeInsets.fromLTRB(0, 0, 16, 12),
+            actions: [
+              TextButton(
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                ),
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  '閉じる',
+                  style: TextStyle(
+                    color: Colors.orange,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   // 曜日ごとの上限数を取得するロジック
@@ -75,13 +186,12 @@ class _ProductSelectPageState extends State<ProductSelectPage> {
 
     if (picked != null) {
       setState(() {
-        // 💡 修正ポイント：日付が変わっても、前画面から届いた「元の時間情報」を上書きせずにガッチリキープします！
         _selectedDate = DateTime(
           picked.year,
           picked.month,
           picked.day,
-          widget.initialDate.hour, // 👈 最初の時間をキープ
-          widget.initialDate.minute, // 👈 最初の時間をキープ
+          widget.initialDate.hour,
+          widget.initialDate.minute,
         );
         orderCount.clear();
       });
@@ -123,7 +233,7 @@ class _ProductSelectPageState extends State<ProductSelectPage> {
               color: Colors.orange.shade50,
               width: double.infinity,
               child: Text(
-                '予約日：${_selectedDate.year}/${_selectedDate.month}/${_selectedDate.day} (${widget.selectedTime})', // 💡 画面にも選択時間を優しく添えておきます
+                '予約日：${_selectedDate.year}/${_selectedDate.month}/${_selectedDate.day} (${widget.selectedTime})',
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
@@ -176,8 +286,7 @@ class _ProductSelectPageState extends State<ProductSelectPage> {
                             builder: (context) => UserInfoPage(
                               orderCount: orderCount,
                               totalAmount: totalAmount,
-                              selectedDate:
-                                  _selectedDate, // 💡 時間が詰まった状態のままUserInfoPageにバトンタッチ
+                              selectedDate: _selectedDate,
                             ),
                           ),
                         )
