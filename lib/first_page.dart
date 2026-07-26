@@ -101,13 +101,18 @@ class FirstPage extends StatelessWidget {
                     lastDate: now.add(const Duration(days: 30)),
                     locale: const Locale('ja', 'JP'),
                     selectableDayPredicate: (DateTime day) {
-                      // 定休日（月・火）とGW休暇（2026/5/4〜5/8）を除外
+                      // 1. 定休日（月・火）の除外
                       if (day.weekday == DateTime.monday ||
-                          day.weekday == DateTime.tuesday)
+                          day.weekday == DateTime.tuesday) {
                         return false;
-                      if (day.isAfter(DateTime(2026, 5, 3)) &&
-                          day.isBefore(DateTime(2026, 5, 9)))
+                      }
+
+                      // 2. 夏期休業（2026/8/10〜8/14）の除外
+                      if (day.isAfter(DateTime(2026, 8, 9)) &&
+                          day.isBefore(DateTime(2026, 8, 15))) {
                         return false;
+                      }
+
                       return true;
                     },
                   );
