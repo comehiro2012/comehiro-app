@@ -1,167 +1,207 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class OrderConfirmPage extends StatelessWidget {
-  final Map<String, int> orderCount;
-  final int totalAmount;
-  final DateTime selectedDate;
+import 'core/reservation/reservation_validator.dart';
+import 'core/utils/date_extensions.dart';
+import 'models/reservation.dart';
+import 'services/reservation_repository.dart';
 
-  const OrderConfirmPage({
-    super.key,
-    required this.orderCount,
-    required this.totalAmount,
-    required this.selectedDate,
-  });
+class OrderConfirmPage extends StatefulWidget {
+  const OrderConfirmPage({super.key, required this.reservation});
+  final ReservationDraft reservation;
 
-  // --- クラスの中にメール送信の関数を配置します ---
-  Future<void> _sendEmail(BuildContext context) async {
-    String orderDetails = "";
-    orderCount.forEach((name, count) {
-      if (count > 0) {
-        orderDetails += "・$name: $count個\n";
-      }
-    });
+  @override
+  State<OrderConfirmPage> createState() => _OrderConfirmPageState();
+}
 
-    // ここから下の書き方を修正します
-    final String subject = "【パン予約】${selectedDate.month}/${selectedDate.day}受取";
-    final String body =
-        """
-こめひろ様
+class _OrderConfirmPageState extends State<OrderConfirmPage> {
+  final _repository = ReservationRepository();
+  bool _isSubmitting = false;
 
-以下の内容でパンの予約をお願いします。
-
-【受取日】: ${selectedDate.year}年${selectedDate.month}月${selectedDate.day}日
-【注文内容】:
-$orderDetails
-【合計金額】: ¥$totalAmount（税込）
-
----
-※お名前とご連絡先を以下にご記入ください
-お名前：
-お電話番号：
-"""; // ここまでをしっかり囲む
-
-    final Uri emailLaunchUri = Uri(
-      scheme: 'mailto',
-      path: 'comehiro.2012@gmail.com',
-      query:
-          'subject=${Uri.encodeComponent(subject)}&body=${Uri.encodeComponent(body)}',
+  Future<void> _submit() async {
+    final validation = ReservationValidator.validate(
+      widget.reservation.pickupDateTime,
+      DateTime.now(),
     );
-
-    try {
-      if (await canLaunchUrl(emailLaunchUri)) {
-        await launchUrl(emailLaunchUri);
-      } else {
-        throw 'メールアプリを起動できませんでした';
-      }
-    } catch (e) {
+    if (!validation.isValid) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('エラー: $e')));
+      ).showSnackBar(SnackBar(content: Text(validation.message!)));
+      return;
+    }
+    setState(() => _isSubmitting = true);
+    try {
+      final preferences = await SharedPreferences.getInstance();
+      await Future.wait([
+        preferences.setString('user_name', widget.reservation.customerName),
+        preferences.setString('user_phone', widget.reservation.customerPhone),
+        preferences.setString('user_email', widget.reservation.customerEmail),
+      ]);
+      await _repository.create(widget.reservation);
+      if (!mounted) return;
+      await showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (dialogContext) => AlertDialog(
+          title: const Text('予約完了'),
+          content: Text('${widget.reservation.customerEmail} 宛に確認メールを送信しました。'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      if (mounted) Navigator.of(context).popUntil((route) => route.isFirst);
+    } on ReservationRepositoryException catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(error.message)));
+      }
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('通信に失敗しました。時間をおいてもう一度お試しください。')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isSubmitting = false);
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    final selectedItems = orderCount.entries
-        .where((entry) => entry.value > 0)
-        .toList();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('注文内容の確認'),
-        backgroundColor: Colors.orange.shade100,
-      ),
-      body: Column(
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: const Text('ご予約内容の確認')),
+    body: SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            width: double.infinity,
-            color: Colors.orange.shade50,
+          const Center(
             child: Text(
-              'お受取日: ${selectedDate.year}年${selectedDate.month}月${selectedDate.day}日',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              'まだ予約は確定していません。\n内容をご確認の上、「予約を確定する」を押してください。',
               textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+              ),
             ),
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: selectedItems.length,
-              itemBuilder: (context, index) {
-                final item = selectedItems[index];
-                return Column(
+          const SizedBox(height: 24),
+          _Section(
+            title: 'お受取日時',
+            child: Text(
+              '${widget.reservation.pickupDateTime.japaneseDate} ${widget.reservation.pickupDateTime.hhmm} 頃',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          _Section(
+            title: 'お客様情報',
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('${widget.reservation.customerName} 様'),
+                Text(widget.reservation.customerPhone),
+                Text(widget.reservation.customerEmail),
+              ],
+            ),
+          ),
+          _Section(
+            title: 'ご予約商品',
+            child: Column(
+              children: [
+                ...widget.reservation.items.map(
+                  (item) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [Text(item.name), Text('${item.quantity} 個')],
+                    ),
+                  ),
+                ),
+                const Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ListTile(
-                      title: Text(
-                        item.key,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      trailing: Text(
-                        '${item.value} 個',
-                        style: const TextStyle(fontSize: 16),
+                    const Text(
+                      '合計金額',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      '¥${widget.reservation.totalAmount}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
                       ),
                     ),
-                    const Divider(height: 1),
                   ],
-                );
-              },
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10,
-                  offset: const Offset(0, -5),
                 ),
               ],
             ),
-            child: SafeArea(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('合計金額', style: TextStyle(fontSize: 18)),
-                      Text(
-                        '¥$totalAmount',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.orange,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                      ),
-                      // 修正ポイント：ここだけで完結させます
-                      onPressed: () => _sendEmail(context),
-                      child: const Text(
-                        'この内容で予約メールを作成する',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+          ),
+          _Section(
+            title: '備考欄',
+            child: Text(
+              widget.reservation.notes.isEmpty
+                  ? 'なし'
+                  : widget.reservation.notes,
+            ),
+          ),
+          const SizedBox(height: 28),
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: _isSubmitting ? null : _submit,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green.shade600,
+                foregroundColor: Colors.white,
               ),
+              child: _isSubmitting
+                  ? const CircularProgressIndicator(color: Colors.white)
+                  : const Text('この内容で予約を確定する'),
+            ),
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              onPressed: _isSubmitting ? null : () => Navigator.pop(context),
+              child: const Text('入力画面に戻って修正する'),
             ),
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
+
+class _Section extends StatelessWidget {
+  const _Section({required this.title, required this.child});
+  final String title;
+  final Widget child;
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(bottom: 16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '■ $title',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.brown,
+          ),
+        ),
+        const SizedBox(height: 5),
+        Card(
+          child: Padding(padding: const EdgeInsets.all(12), child: child),
+        ),
+      ],
+    ),
+  );
 }

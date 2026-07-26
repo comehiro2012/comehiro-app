@@ -16,6 +16,7 @@ dependencies:
   # Firebase用
   firebase_core: ^3.11.0
   cloud_firestore: ^5.6.0
+  cloud_functions: ^5.5.0
   # 以前から使っていたもの
   url_launcher: ^6.1.0
   cupertino_icons: ^1.0.8

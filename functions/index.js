@@ -3,6 +3,8 @@ const { getFirestore, FieldValue, Timestamp } = require("firebase-admin/firestor
 const { logger } = require("firebase-functions");
 const { onDocumentCreated } = require("firebase-functions/v2/firestore");
 const { onSchedule } = require("firebase-functions/v2/scheduler");
+const { onCall, HttpsError } = require("firebase-functions/v2/https");
+const { MailService } = require("./services/mail_service");
 
 // Firebase Admin SDK の初期化
 initializeApp();
@@ -13,6 +15,106 @@ const SHOP_EMAIL = "comehiro.2012@gmail.com";
 
 // 💡 曜日を日本語に変換するための共通配列
 const weekDays = ['日', '月', '火', '水', '木', '金', '土'];
+
+const CLOSED_WEEKDAYS = new Set([1, 2]); // JavaScript: 日=0、月=1、火=2
+const CUTOFF_HOUR = 15;
+const BOOKING_WINDOW_DAYS = 30;
+const HOLIDAYS = [
+  { start: [2026, 8, 10], end: [2026, 8, 14] },
+];
+
+function jstParts(date = new Date()) {
+  const jst = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+  return {
+    year: jst.getUTCFullYear(), month: jst.getUTCMonth() + 1,
+    day: jst.getUTCDate(), hour: jst.getUTCHours(),
+  };
+}
+
+function jstDayNumber(year, month, day) {
+  return Date.UTC(year, month - 1, day) / 86400000;
+}
+
+function isHoliday(year, month, day) {
+  const target = jstDayNumber(year, month, day);
+  return HOLIDAYS.some(({ start, end }) =>
+    target >= jstDayNumber(...start) && target <= jstDayNumber(...end));
+}
+
+function validationErrorForPickup(year, month, day, now = new Date()) {
+  const weekday = new Date(Date.UTC(year, month - 1, day)).getUTCDay();
+  if (CLOSED_WEEKDAYS.has(weekday)) return '月曜・火曜は定休日のため予約できません。';
+  if (isHoliday(year, month, day)) return 'この日は休業日のため予約できません。';
+
+  const current = jstParts(now);
+  const todayNumber = jstDayNumber(current.year, current.month, current.day);
+  const targetNumber = jstDayNumber(year, month, day);
+  const minOffset = current.hour >= CUTOFF_HOUR ? 2 : 1;
+  if (targetNumber < todayNumber + minOffset) return '予約は前日15時までにお願いします。';
+  if (targetNumber > todayNumber + BOOKING_WINDOW_DAYS) return '予約できるのは30日先までです。';
+  return null;
+}
+
+/**
+ * 予約登録の唯一の入口です。クライアントが古いWeb版でも、ここで定休日・締切を必ず再検証します。
+ */
+exports.createReservation = onCall({ region: 'asia-northeast1' }, async (request) => {
+  const data = request.data || {};
+  const year = Number(data.pickupYear);
+  const month = Number(data.pickupMonth);
+  const day = Number(data.pickupDay);
+  const hour = Number(data.pickupHour);
+  const minute = Number(data.pickupMinute);
+  const name = String(data.customerName || '').trim();
+  const phone = String(data.customerPhone || '').trim();
+  const email = String(data.customerEmail || '').trim();
+  const notes = String(data.notes || '').trim();
+  const items = Array.isArray(data.items) ? data.items : [];
+
+  if (![year, month, day, hour, minute].every(Number.isInteger) || month < 1 || month > 12 || day < 1 || day > 31 || hour < 10 || hour > 14 || minute !== 0) {
+    throw new HttpsError('invalid-argument', '受取日時が正しくありません。');
+  }
+  const calendarDate = new Date(Date.UTC(year, month - 1, day));
+  if (calendarDate.getUTCFullYear() !== year || calendarDate.getUTCMonth() !== month - 1 || calendarDate.getUTCDate() !== day) {
+    throw new HttpsError('invalid-argument', '受取日が正しくありません。');
+  }
+  const validationError = validationErrorForPickup(year, month, day);
+  if (validationError) throw new HttpsError('failed-precondition', validationError);
+  if (!name || !phone || !/^\S+@\S+\.\S+$/.test(email)) {
+    throw new HttpsError('invalid-argument', 'お客様情報が正しくありません。');
+  }
+  if (items.length === 0 || items.some((item) => !item || !item.name || !Number.isInteger(item.quantity) || item.quantity < 1 || !Number.isInteger(item.unitPrice) || item.unitPrice < 0)) {
+    throw new HttpsError('invalid-argument', '注文内容が正しくありません。');
+  }
+
+  // JSTの日時を正しいUTC Timestampとして保存します。
+  const pickupDate = new Date(Date.UTC(year, month - 1, day, hour - 9, minute));
+  const orderCount = {};
+  let totalPrice = 0;
+  for (const item of items) {
+    const safeName = String(item.name).slice(0, 100);
+    orderCount[safeName] = (orderCount[safeName] || 0) + item.quantity;
+    totalPrice += item.unitPrice * item.quantity;
+  }
+  const pickupDateStr = `${year}年${month}月${day}日（${weekDays[new Date(Date.UTC(year, month - 1, day)).getUTCDay()]}）`;
+  const orderDetail = {
+    userName: name, userPhone: phone, userEmail: email, totalPrice, orderCount,
+    pickupDate: Timestamp.fromDate(pickupDate), notes: notes || 'なし',
+    createdAt: FieldValue.serverTimestamp(),
+  };
+  const reservation = await new MailService(db).enqueueCustomerConfirmation({
+    email,
+    customerName: name,
+    pickupDateLabel: pickupDateStr,
+    hour,
+    minute,
+    orderCount,
+    totalPrice,
+    notes,
+    orderDetail,
+  });
+  return { reservationId: reservation.id };
+});
 
 /**
  * 💡 注文内訳（商品名と個数）のHTMLリストを生成する共通関数（すっきり上品な仕切り線デザイン）

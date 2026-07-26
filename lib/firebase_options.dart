@@ -85,5 +85,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'comehiro-app-439f7.firebasestorage.app',
     measurementId: 'G-6S0GH7Z6RT',
   );
-
 }

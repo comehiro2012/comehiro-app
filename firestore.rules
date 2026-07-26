@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 予約とメールキューはCloud Functions（Admin SDK）だけが作成します。
+    // 管理画面を追加する場合は、管理者認証用のルールを別途追加してください。
+    match /mail/{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
