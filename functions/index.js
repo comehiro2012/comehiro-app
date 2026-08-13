@@ -23,6 +23,18 @@ const HOLIDAYS = [
   { start: [2026, 8, 10], end: [2026, 8, 14] },
 ];
 
+// メール本文に予約者が入力した文字列を埋め込む前に必ずエスケープします。
+// HTML をそのまま入れると、メールの表示崩れや意図しないリンクの原因になります。
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[char]));
+}
+
 function jstParts(date = new Date()) {
   const jst = new Date(date.getTime() + 9 * 60 * 60 * 1000);
   return {
@@ -80,10 +92,15 @@ exports.createReservation = onCall({ region: 'asia-northeast1' }, async (request
   }
   const validationError = validationErrorForPickup(year, month, day);
   if (validationError) throw new HttpsError('failed-precondition', validationError);
-  if (!name || !phone || !/^\S+@\S+\.\S+$/.test(email)) {
+  if (!name || name.length > 100 || !phone || phone.length > 30 ||
+      email.length > 254 || !/^\S+@\S+\.\S+$/.test(email) || notes.length > 1000) {
     throw new HttpsError('invalid-argument', 'お客様情報が正しくありません。');
   }
-  if (items.length === 0 || items.some((item) => !item || !item.name || !Number.isInteger(item.quantity) || item.quantity < 1 || !Number.isInteger(item.unitPrice) || item.unitPrice < 0)) {
+  if (items.length === 0 || items.some((item) =>
+    !item || typeof item.name !== 'string' || item.name.trim() === '' ||
+    item.name.length > 100 || !Number.isSafeInteger(item.quantity) ||
+    item.quantity < 1 || item.quantity > 100 ||
+    !Number.isSafeInteger(item.unitPrice) || item.unitPrice < 0 || item.unitPrice > 1000000)) {
     throw new HttpsError('invalid-argument', '注文内容が正しくありません。');
   }
 
@@ -129,7 +146,7 @@ function generateOrderListHtml(orderCountMap) {
     if (count > 0) {
       listHtml += `
             <li style="margin-bottom: 8px; list-style: none; border-bottom: 1px dashed #eee; padding-bottom: 8px; display: flex; justify-content: space-between; font-size: 14px;">
-                <span>${productName}</span>
+                <span>${escapeHtml(productName)}</span>
                 <span style="font-weight: bold;">${count} 個</span>
             </li>`;
     }
@@ -203,15 +220,15 @@ exports.sendAdminNotification = onDocumentCreated({
               <table style="width: 100%; font-size: 14px; border-collapse: collapse; line-height: 1.6;">
                 <tr>
                   <td style="width: 90px; color: #777777; padding: 2px 0;">お名前</td>
-                  <td style="font-weight: bold; color: #333333; padding: 2px 0;">${userName} 様</td>
+                  <td style="font-weight: bold; color: #333333; padding: 2px 0;">${escapeHtml(userName)} 様</td>
                 </tr>
                 <tr>
                   <td style="color: #777777; padding: 2px 0;">お電話番号</td>
-                  <td style="color: #333333; padding: 2px 0;">${userPhone}</td>
+                  <td style="color: #333333; padding: 2px 0;">${escapeHtml(userPhone)}</td>
                 </tr>
                 <tr>
                   <td style="color: #777777; padding: 2px 0;">メールアドレス</td>
-                  <td style="color: #333333; padding: 2px 0;">${userEmail}</td>
+                  <td style="color: #333333; padding: 2px 0;">${escapeHtml(userEmail)}</td>
                 </tr>
               </table>
             </div>
@@ -241,7 +258,7 @@ exports.sendAdminNotification = onDocumentCreated({
             </div>
 
             <h3 style="font-size: 14px; font-weight: bold; color: #5d4037; border-left: 3px solid #8d6e63; padding-left: 8px; margin: 24px 0 12px 0;">■ 備考欄（ご要望）</h3>
-            <div style="background-color: #fdfdfd; padding: 12px; border-radius: 6px; white-space: pre-wrap; font-size: 13px; border: 1px solid #eeeeee; color: #666666; line-height: 1.5;">${notesText.replace(/\n/g, '<br>')}</div>
+            <div style="background-color: #fdfdfd; padding: 12px; border-radius: 6px; white-space: pre-wrap; font-size: 13px; border: 1px solid #eeeeee; color: #666666; line-height: 1.5;">${escapeHtml(notesText).replace(/\n/g, '<br>')}</div>
             
             <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eeeeee; text-align: center;">
               <p style="font-size: 11px; color: #999999; margin: 0;">
@@ -339,7 +356,7 @@ exports.sendDailyReminder = onSchedule({
                   </div>
                   
                   <div style="padding-top: 24px;">
-                    <p style="font-size: 14px; margin-bottom: 20px;">${userName} 様</p>
+                    <p style="font-size: 14px; margin-bottom: 20px;">${escapeHtml(userName)} 様</p>
                     <p style="font-size: 14px; line-height: 1.6; color: #555555;">本日、ご予約いただいた商品のお受取り日となっております。<br>どうぞお気をつけてお越しくださいませ。</p>
                     
                     <h3 style="font-size: 14px; font-weight: bold; color: #5d4037; border-left: 3px solid #8d6e63; padding-left: 8px; margin: 28px 0 12px 0;">■ ご予約内容</h3>
