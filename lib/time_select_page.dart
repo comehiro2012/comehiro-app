@@ -42,7 +42,7 @@ class TimeSelectPage extends StatelessWidget {
               );
               Navigator.push(
                 context,
-                MaterialPageRoute(
+                _ProductSelectionRoute(
                   builder: (_) => ProductSelectPage(initialDate: pickup),
                 ),
               );
@@ -52,4 +52,15 @@ class TimeSelectPage extends StatelessWidget {
       },
     ),
   );
+}
+
+/// 商品選択画面はカテゴリ切替にも横スワイプを使います。
+/// 端からの戻るスワイプと競合すると、画面が重なって見えることがあるため、
+/// この画面だけ戻るジェスチャーを無効にします。AppBar の戻るボタンと
+/// 端末の戻る操作は通常どおり利用できます。
+class _ProductSelectionRoute<T> extends MaterialPageRoute<T> {
+  _ProductSelectionRoute({required super.builder});
+
+  @override
+  bool get popGestureEnabled => false;
 }
