@@ -8,7 +8,7 @@ final List<Map<String, dynamic>> allProducts = [
   // 1. プレーン米粉パン
   {
     'name': 'プレーン米粉パン（ロング）',
-    'price': 410,
+    'price': 450,
     'category': '食パン',
     'limit_weekday': 10,
     'limit_weekend': 10,
@@ -16,7 +16,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'プレーン米粉パン（ハーフ）',
-    'price': 205,
+    'price': 225,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 10,
@@ -26,7 +26,7 @@ final List<Map<String, dynamic>> allProducts = [
   // 2. 玄米パン
   {
     'name': '玄米パン（ロング）',
-    'price': 540,
+    'price': 600,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 5,
@@ -34,7 +34,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': '玄米パン（ハーフ）',
-    'price': 270,
+    'price': 300,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 5,
@@ -44,7 +44,7 @@ final List<Map<String, dynamic>> allProducts = [
   // 3. かぼちゃパン
   {
     'name': 'かぼちゃパン（ロング）',
-    'price': 550,
+    'price': 590,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 5,
@@ -52,7 +52,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'かぼちゃパン（ハーフ）',
-    'price': 275,
+    'price': 295,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 5,
@@ -62,7 +62,7 @@ final List<Map<String, dynamic>> allProducts = [
   // 4. アールグレイ
   {
     'name': 'アールグレイ（ロング）',
-    'price': 630,
+    'price': 670,
     'category': '食パン',
     'limit_weekday': 5,
     'limit_weekend': 5,
@@ -70,7 +70,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'アールグレイ（ハーフ）',
-    'price': 315,
+    'price': 335,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 5,
@@ -80,7 +80,7 @@ final List<Map<String, dynamic>> allProducts = [
   // 5. 黒ごま
   {
     'name': '黒ごま（ロング）',
-    'price': 510,
+    'price': 550,
     'category': '食パン',
     'limit_weekday': 5,
     'limit_weekend': 5,
@@ -88,7 +88,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': '黒ごま（ハーフ）',
-    'price': 255,
+    'price': 275,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 5,
@@ -98,7 +98,7 @@ final List<Map<String, dynamic>> allProducts = [
   // 6. レーズンパン
   {
     'name': 'レーズンパン（ロング）',
-    'price': 510,
+    'price': 550,
     'category': '食パン',
     'limit_weekday': 5,
     'limit_weekend': 5,
@@ -106,7 +106,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'レーズンパン（ハーフ）',
-    'price': 255,
+    'price': 275,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 5,
@@ -116,7 +116,7 @@ final List<Map<String, dynamic>> allProducts = [
   // 7. クルミいちじくパン
   {
     'name': 'クルミいちじくパン（ロング）',
-    'price': 700,
+    'price': 740,
     'category': '食パン',
     'limit_weekday': 5,
     'limit_weekend': 5,
@@ -124,7 +124,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'クルミいちじくパン（ハーフ）',
-    'price': 350,
+    'price': 370,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 5,
@@ -134,7 +134,7 @@ final List<Map<String, dynamic>> allProducts = [
   // 8. さつまパン
   {
     'name': 'さつまパン（ロング）',
-    'price': 500,
+    'price': 540,
     'category': '食パン',
     'limit_weekday': 5,
     'limit_weekend': 5,
@@ -142,7 +142,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'さつまパン（ハーフ）',
-    'price': 250,
+    'price': 270,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 5,
@@ -152,7 +152,7 @@ final List<Map<String, dynamic>> allProducts = [
   // 9. ココアマーブルパン
   {
     'name': 'ココアマーブルパン（ロング）',
-    'price': 510,
+    'price': 550,
     'category': '食パン',
     'limit_weekday': 5,
     'limit_weekend': 5,
@@ -160,7 +160,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'ココアマーブルパン（ハーフ）',
-    'price': 255,
+    'price': 275,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 5,
@@ -170,7 +170,7 @@ final List<Map<String, dynamic>> allProducts = [
   // 10. チーズパン
   {
     'name': 'チーズパン（ロング）',
-    'price': 590,
+    'price': 630,
     'category': '食パン',
     'limit_weekday': 5,
     'limit_weekend': 5,
@@ -178,7 +178,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'チーズパン（ハーフ）',
-    'price': 295,
+    'price': 315,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 5,
@@ -188,7 +188,7 @@ final List<Map<String, dynamic>> allProducts = [
   // 11. クランベリーパン
   {
     'name': 'クランベリーパン（ロング）',
-    'price': 540,
+    'price': 580,
     'category': '食パン',
     'limit_weekday': 5,
     'limit_weekend': 5,
@@ -196,7 +196,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'クランベリーパン（ハーフ）',
-    'price': 270,
+    'price': 290,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 5,
@@ -206,7 +206,7 @@ final List<Map<String, dynamic>> allProducts = [
   // 12. チョコチップパン
   {
     'name': 'チョコチップパン（ロング）',
-    'price': 550,
+    'price': 590,
     'category': '食パン',
     'limit_weekday': 5,
     'limit_weekend': 5,
@@ -214,7 +214,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'チョコチップパン（ハーフ）',
-    'price': 275,
+    'price': 295,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 5,
@@ -224,7 +224,7 @@ final List<Map<String, dynamic>> allProducts = [
   // 13. 伊予柑ピールパン
   {
     'name': '伊予柑ピールパン（ロング）',
-    'price': 620,
+    'price': 660,
     'category': '食パン',
     'limit_weekday': 5,
     'limit_weekend': 5,
@@ -232,7 +232,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': '伊予柑ピールパン（ハーフ）',
-    'price': 310,
+    'price': 330,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 5,
@@ -242,7 +242,7 @@ final List<Map<String, dynamic>> allProducts = [
   // 14. あずきパン
   {
     'name': 'あずきパン（ロング）',
-    'price': 510,
+    'price': 550,
     'category': '食パン',
     'limit_weekday': 5,
     'limit_weekend': 5,
@@ -250,7 +250,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'あずきパン（ハーフ）',
-    'price': 255,
+    'price': 275,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 5,
@@ -260,7 +260,7 @@ final List<Map<String, dynamic>> allProducts = [
   // 15. くるみパン
   {
     'name': 'くるみパン（ロング）',
-    'price': 700,
+    'price': 740,
     'category': '食パン',
     'limit_weekday': 5,
     'limit_weekend': 5,
@@ -268,7 +268,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'くるみパン（ハーフ）',
-    'price': 350,
+    'price': 370,
     'category': '食パン',
     'limit_weekday': 0,
     'limit_weekend': 5,
@@ -280,7 +280,7 @@ final List<Map<String, dynamic>> allProducts = [
   // ==========================================
   {
     'name': 'ウィンナーパン（ケチャップ）',
-    'price': 245,
+    'price': 255,
     'category': '調理パン',
     'limit_weekday': 8,
     'limit_weekend': 10,
@@ -288,7 +288,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'ウィンナーパン（マスタード）',
-    'price': 245,
+    'price': 255,
     'category': '調理パン',
     'limit_weekday': 8,
     'limit_weekend': 10,
@@ -296,7 +296,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'ツナマヨパン',
-    'price': 245,
+    'price': 255,
     'category': '調理パン',
     'limit_weekday': 8,
     'limit_weekend': 10,
@@ -304,7 +304,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'ベーコンポテト',
-    'price': 255,
+    'price': 265,
     'category': '調理パン',
     'limit_weekday': 0,
     'limit_weekend': 10,
@@ -312,7 +312,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'アボカドチーズ',
-    'price': 260,
+    'price': 270,
     'category': '調理パン',
     'limit_weekday': 8,
     'limit_weekend': 10,
@@ -320,7 +320,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'スパイシードッグパン',
-    'price': 280,
+    'price': 290,
     'category': '調理パン',
     'limit_weekday': 8,
     'limit_weekend': 10,
@@ -328,7 +328,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'チーズカレーパン',
-    'price': 260,
+    'price': 270,
     'category': '調理パン',
     'limit_weekday': 0,
     'limit_weekend': 10,
@@ -336,7 +336,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'コロッケパン',
-    'price': 240,
+    'price': 260,
     'category': '調理パン',
     'limit_weekday': 0,
     'limit_weekend': 8,
@@ -344,7 +344,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'ブルーチーズ',
-    'price': 185,
+    'price': 195,
     'category': '調理パン',
     'limit_weekday': 5,
     'limit_weekend': 5,
@@ -352,7 +352,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'コーンパン',
-    'price': 185,
+    'price': 195,
     'category': '調理パン',
     'limit_weekday': 0,
     'limit_weekend': 10,
@@ -360,7 +360,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'マルゲリータ',
-    'price': 245,
+    'price': 255,
     'category': '調理パン',
     'limit_weekday': 10,
     'limit_weekend': 10,
@@ -368,7 +368,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'サラミ&オリーブピザ',
-    'price': 255,
+    'price': 260,
     'category': '調理パン',
     'limit_weekday': 10,
     'limit_weekend': 10,
@@ -376,7 +376,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'コッペパン（2本入）',
-    'price': 300,
+    'price': 330,
     'category': '調理パン',
     'limit_weekday': 0,
     'limit_weekend': 10,
@@ -384,7 +384,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': '丸パン',
-    'price': 150,
+    'price': 165,
     'category': '調理パン',
     'limit_weekday': 0,
     'limit_weekend': 10,
@@ -392,7 +392,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'ピザ生地',
-    'price': 400,
+    'price': 430,
     'category': '調理パン',
     'limit_weekday': 5,
     'limit_weekend': 5,
@@ -404,7 +404,7 @@ final List<Map<String, dynamic>> allProducts = [
   // ==========================================
   {
     'name': 'ワッフル',
-    'price': 185,
+    'price': 195,
     'category': '菓子パン',
     'limit_weekday': 12,
     'limit_weekend': 12,
@@ -412,7 +412,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'チョコチップワッフル',
-    'price': 210,
+    'price': 220,
     'category': '菓子パン',
     'limit_weekday': 12,
     'limit_weekend': 12,
@@ -420,7 +420,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'お芋ドーナツ',
-    'price': 185,
+    'price': 195,
     'category': '菓子パン',
     'limit_weekday': 9,
     'limit_weekend': 12,
@@ -428,31 +428,15 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'ココアドーナツ',
-    'price': 185,
+    'price': 195,
     'category': '菓子パン',
     'limit_weekday': 9,
     'limit_weekend': 12,
     'allergies': ['乳', '豚肉', '大豆'],
   },
   {
-    'name': '黒糖パン',
-    'price': 190,
-    'category': '菓子パン',
-    'limit_weekday': 9,
-    'limit_weekend': 9,
-    'allergies': ['豚肉'],
-  },
-  {
-    'name': 'レーズン黒糖パン',
-    'price': 205,
-    'category': '菓子パン',
-    'limit_weekday': 9,
-    'limit_weekend': 9,
-    'allergies': ['豚肉'],
-  },
-  {
     'name': '塩バターパン',
-    'price': 160,
+    'price': 170,
     'category': '菓子パン',
     'limit_weekday': 0,
     'limit_weekend': 9,
@@ -460,7 +444,7 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'クリームチーズパン',
-    'price': 235,
+    'price': 245,
     'category': '菓子パン',
     'limit_weekday': 0,
     'limit_weekend': 9,
@@ -468,7 +452,23 @@ final List<Map<String, dynamic>> allProducts = [
   },
   {
     'name': 'いちごジャム',
-    'price': 165,
+    'price': 175,
+    'category': '菓子パン',
+    'limit_weekday': 9,
+    'limit_weekend': 9,
+    'allergies': ['豚肉'],
+  },
+  {
+    'name': 'つぶあんぱん',
+    'price': 175,
+    'category': '菓子パン',
+    'limit_weekday': 9,
+    'limit_weekend': 9,
+    'allergies': ['豚肉'],
+  },
+  {
+    'name': 'レモンあんぱん',
+    'price': 195,
     'category': '菓子パン',
     'limit_weekday': 9,
     'limit_weekend': 9,
@@ -477,22 +477,6 @@ final List<Map<String, dynamic>> allProducts = [
   {
     'name': 'よもぎあんぱん',
     'price': 195,
-    'category': '菓子パン',
-    'limit_weekday': 9,
-    'limit_weekend': 9,
-    'allergies': ['豚肉'],
-  },
-  {
-    'name': 'レモンあんぱん',
-    'price': 185,
-    'category': '菓子パン',
-    'limit_weekday': 9,
-    'limit_weekend': 9,
-    'allergies': ['豚肉'],
-  },
-  {
-    'name': 'つぶあんぱん',
-    'price': 165,
     'category': '菓子パン',
     'limit_weekday': 9,
     'limit_weekend': 9,
