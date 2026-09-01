@@ -92,9 +92,13 @@ exports.createReservation = onCall({ region: 'asia-northeast1' }, async (request
   }
   const validationError = validationErrorForPickup(year, month, day);
   if (validationError) throw new HttpsError('failed-precondition', validationError);
+  // メールアドレスに全角ダッシュ等の非ASCII文字が混入すると、送信自体はできても
+  // 一部の携帯キャリア（SMTPUTF8非対応のメールサーバー）宛てに配信エラーとなるため、
+  // ここでASCII文字のみを許可し、予約時点でお客様に入力し直してもらう。
+  const isAsciiEmail = /^[\x21-\x7e]+$/.test(email);
   if (!name || name.length > 100 || !phone || phone.length > 30 ||
-      email.length > 254 || !/^\S+@\S+\.\S+$/.test(email) || notes.length > 1000) {
-    throw new HttpsError('invalid-argument', 'お客様情報が正しくありません。');
+      email.length > 254 || !isAsciiEmail || !/^\S+@\S+\.\S+$/.test(email) || notes.length > 1000) {
+    throw new HttpsError('invalid-argument', 'メールアドレスは半角英数字・記号で入力してください。');
   }
   if (items.length === 0 || items.some((item) =>
     !item || typeof item.name !== 'string' || item.name.trim() === '' ||
